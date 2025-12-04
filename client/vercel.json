@@ -3,6 +3,7 @@
 		{
 			"source": "/api/:path*",
 			"destination": "https://real-restaurant-production.up.railway.app/api/:path*"
-		}
+		},
+		{ "source": "/:path*", "destination": "/index.html" }
 	]
 }
