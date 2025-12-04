@@ -1,7 +1,14 @@
 import mysql from "mysql2/promise";
 import chalk from "chalk";
 import fs from "fs";
-import { createPool, DATABASE_NAME } from "./connection.js";
+import {
+	createPool,
+	DATABASE_NAME,
+	DATABASE_HOST,
+	DATABASE_USER,
+	DATABASE_PASSWORD,
+	DATABASE_PORT,
+} from "./connection.js";
 import bcrypt from "bcrypt";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "root";
@@ -80,9 +87,10 @@ export async function initializeDatabase(): Promise<void> {
 
 	try {
 		connection = await mysql.createConnection({
-			host: "localhost",
-			user: "root",
-			password: "",
+			host: DATABASE_HOST,
+			user: DATABASE_USER,
+			password: DATABASE_PASSWORD,
+			port: DATABASE_PORT,
 			multipleStatements: true,
 		});
 
