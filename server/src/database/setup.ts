@@ -13,7 +13,8 @@ import bcrypt from "bcrypt";
 
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "root";
 
-const dbSchema = "src/schemas/main.sql";
+const autorunSchema = "src/schemas/autorun.sql";
+const runonceSchema = "src/schemas/runonce.sql";
 
 async function dbExists(connection: mysql.Connection): Promise<boolean> {
 	const [databases] = await connection.query<mysql.RowDataPacket[]>(
@@ -96,19 +97,30 @@ export async function initializeDatabase(): Promise<void> {
 
 		const exists = await dbExists(connection);
 
-		if (exists) {
+		// Always run autorun.sql to create database and any missing tables
+		console.log(
+			chalk.yellow.bold(
+				"Running autorun.sql (creates database and missing tables)..."
+			)
+		);
+		await runSQL(autorunSchema, connection);
+
+		if (!exists) {
+			// Only seed data when database is first created
 			console.log(
-				chalk.cyanBright(
-					`Database ${DATABASE_NAME} exists! Continuing...\nWill run SQL to create any missing tables`
+				chalk.yellow.bold(
+					`Database ${DATABASE_NAME} was created. Running runonce.sql (seeding initial data)...`
 				)
 			);
+			await runSQL(runonceSchema, connection);
 		} else {
 			console.log(
-				chalk.yellow.bold(`Database ${DATABASE_NAME} doesn't exist...`)
+				chalk.cyanBright(
+					`Database ${DATABASE_NAME} already exists. Skipping seed data.`
+				)
 			);
 		}
 
-		await runSQL(dbSchema, connection);
 		connection.destroy();
 		createPool();
 	} catch (error) {
