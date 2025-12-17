@@ -49,11 +49,14 @@ export default function BookingForm() {
 	};
 
 	return (
-		<div>
+		<div class="auth-card" style="max-width: 500px; margin: 0 auto;">
 			<Form onSubmit={handleSubmit}>
-				<div>
-					<label for="party-size">Party Size</label>
+				<div class="form-group">
+					<label class="form-label" for="party-size">
+						Party Size
+					</label>
 					<input
+						class="form-input"
 						type="number"
 						id="party-size"
 						value={partySize()}
@@ -65,11 +68,15 @@ export default function BookingForm() {
 						required
 						disabled={loading()}
 					/>
+					<p class="form-hint">Maximum 20 guests per reservation</p>
 				</div>
 
-				<div>
-					<label for="table-number">Table Number</label>
+				<div class="form-group">
+					<label class="form-label" for="table-number">
+						Preferred Table
+					</label>
 					<select
+						class="form-select"
 						id="table-number"
 						value={tableNumber()}
 						onChange={(e) =>
@@ -85,9 +92,12 @@ export default function BookingForm() {
 					</select>
 				</div>
 
-				<div>
-					<label for="datetime">Date and Time</label>
+				<div class="form-group">
+					<label class="form-label" for="datetime">
+						Date &amp; Time
+					</label>
 					<input
+						class="form-input"
 						type="datetime-local"
 						id="datetime"
 						value={datetime()}
@@ -97,11 +107,12 @@ export default function BookingForm() {
 					/>
 				</div>
 
-				<div>
-					<label for="special-instructions">
-						Special Instructions (Optional)
+				<div class="form-group">
+					<label class="form-label" for="special-instructions">
+						Special Requests
 					</label>
 					<textarea
+						class="form-textarea"
 						id="special-instructions"
 						value={specialInstructions()}
 						onInput={(e) =>
@@ -109,12 +120,16 @@ export default function BookingForm() {
 						}
 						disabled={loading()}
 						rows="4"
-						placeholder="Any dietary requirements or special requests..."
+						placeholder="Dietary requirements, celebrations, seating preferences..."
 					/>
 				</div>
 
-				<button type="submit" disabled={loading()}>
-					{loading() ? "Creating Booking..." : "Create Booking"}
+				<button
+					class="btn btn--primary btn--full"
+					type="submit"
+					disabled={loading()}
+				>
+					{loading() ? "Confirming..." : "Confirm Reservation"}
 				</button>
 			</Form>
 		</div>

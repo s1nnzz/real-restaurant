@@ -157,205 +157,255 @@ export default function Admin() {
 	}
 
 	return (
-		<div>
-			<div>
-				<h1>Admin Dashboard</h1>
+		<div class="admin-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Admin Dashboard</h1>
+					<p class="page-header__subtitle">
+						Manage users, bookings, and content
+					</p>
+				</div>
+			</div>
 
-				<div>
-					<button onClick={() => setActiveTab("users")}>
+			<div class="container">
+				<div class="admin-tabs">
+					<button
+						class={`admin-tab ${
+							activeTab() === "users" ? "admin-tab--active" : ""
+						}`}
+						onClick={() => setActiveTab("users")}
+					>
 						Users ({users().length})
 					</button>
-					<button onClick={() => setActiveTab("bookings")}>
+					<button
+						class={`admin-tab ${
+							activeTab() === "bookings"
+								? "admin-tab--active"
+								: ""
+						}`}
+						onClick={() => setActiveTab("bookings")}
+					>
 						Bookings ({bookings().length})
 					</button>
-					<button onClick={() => setActiveTab("images")}>
+					<button
+						class={`admin-tab ${
+							activeTab() === "images" ? "admin-tab--active" : ""
+						}`}
+						onClick={() => setActiveTab("images")}
+					>
 						Images ({images().length})
 					</button>
-					<button onClick={() => navigate("/upload")}>
-						Upload File
+					<button
+						class="admin-tab"
+						onClick={() => navigate("/upload")}
+					>
+						+ Upload File
 					</button>
 				</div>
 
 				<Show when={activeTab() === "users"}>
-					<div>
-						<h2>User Management</h2>
+					<div class="admin-section">
+						<h2 class="admin-section__title">User Management</h2>
 						<Show
-							when={loading()}
+							when={!loading()}
 							fallback={
-								<Show
-									when={users().length > 0}
-									fallback={<p>No users found.</p>}
-								>
-									<table>
-										<thead>
-											<tr>
-												<th>ID</th>
-												<th>Email</th>
-												<th>Role</th>
-												<th>Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											<For each={users()}>
-												{(user) => (
-													<tr>
-														<td>{user.id}</td>
-														<td>{user.email}</td>
-														<td>
-															<span>
-																{user.role}
-															</span>
-														</td>
-														<td>
-															<button
-																onClick={() =>
-																	deleteUser(
-																		user.id,
-																		user.email
-																	)
-																}
-															>
-																Delete
-															</button>
-														</td>
-													</tr>
-												)}
-											</For>
-										</tbody>
-									</table>
-								</Show>
+								<div class="loading">
+									<div class="spinner"></div>
+									<p>Loading users...</p>
+								</div>
 							}
 						>
-							<p>Loading users...</p>
+							<Show
+								when={users().length > 0}
+								fallback={
+									<p class="text-muted">No users found.</p>
+								}
+							>
+								<table class="admin-table">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Email</th>
+											<th>Role</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<For each={users()}>
+											{(user) => (
+												<tr>
+													<td>{user.id}</td>
+													<td>{user.email}</td>
+													<td>
+														<span
+															class={`status ${
+																user.role ===
+																"admin"
+																	? "status--info"
+																	: "status--success"
+															}`}
+														>
+															{user.role}
+														</span>
+													</td>
+													<td class="admin-table__actions">
+														<button
+															class="btn btn--outline btn--small"
+															onClick={() =>
+																deleteUser(
+																	user.id,
+																	user.email
+																)
+															}
+														>
+															Delete
+														</button>
+													</td>
+												</tr>
+											)}
+										</For>
+									</tbody>
+								</table>
+							</Show>
 						</Show>
 					</div>
 				</Show>
 
 				<Show when={activeTab() === "bookings"}>
-					<div>
-						<h2>Booking Management</h2>
+					<div class="admin-section">
+						<h2 class="admin-section__title">Booking Management</h2>
 						<Show
-							when={loading()}
+							when={!loading()}
 							fallback={
-								<Show
-									when={bookings().length > 0}
-									fallback={<p>No bookings found.</p>}
-								>
-									<table>
-										<thead>
-											<tr>
-												<th>Booking ID</th>
-												<th>Date</th>
-												<th>Table</th>
-												<th>Party Size</th>
-												<th>User ID</th>
-												<th>Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											<For each={bookings()}>
-												{(booking) => (
-													<tr>
-														<td>
-															{booking.booking_id}
-														</td>
-														<td>
-															{new Date(
-																booking.booking_date
-															).toLocaleString()}
-														</td>
-														<td>
-															{
-																booking.table_number
-															}
-														</td>
-														<td>
-															{booking.party_size}
-														</td>
-														<td>
-															{booking.user_id}
-														</td>
-														<td>
-															<button
-																onClick={() =>
-																	deleteBooking(
-																		booking.booking_id
-																	)
-																}
-															>
-																Delete
-															</button>
-														</td>
-													</tr>
-												)}
-											</For>
-										</tbody>
-									</table>
-								</Show>
+								<div class="loading">
+									<div class="spinner"></div>
+									<p>Loading bookings...</p>
+								</div>
 							}
 						>
-							<p>Loading bookings...</p>
+							<Show
+								when={bookings().length > 0}
+								fallback={
+									<p class="text-muted">No bookings found.</p>
+								}
+							>
+								<table class="admin-table">
+									<thead>
+										<tr>
+											<th>Booking ID</th>
+											<th>Date</th>
+											<th>Table</th>
+											<th>Party Size</th>
+											<th>User ID</th>
+											<th>Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<For each={bookings()}>
+											{(booking) => (
+												<tr>
+													<td>
+														{booking.booking_id}
+													</td>
+													<td>
+														{new Date(
+															booking.booking_date
+														).toLocaleString()}
+													</td>
+													<td>
+														Table{" "}
+														{booking.table_number}
+													</td>
+													<td>
+														{booking.party_size}{" "}
+														guests
+													</td>
+													<td>#{booking.user_id}</td>
+													<td class="admin-table__actions">
+														<button
+															class="btn btn--outline btn--small"
+															onClick={() =>
+																deleteBooking(
+																	booking.booking_id
+																)
+															}
+														>
+															Delete
+														</button>
+													</td>
+												</tr>
+											)}
+										</For>
+									</tbody>
+								</table>
+							</Show>
 						</Show>
 					</div>
 				</Show>
 
 				<Show when={activeTab() === "images"}>
-					<div>
-						<h2>Image Management</h2>
+					<div class="admin-section">
+						<h2 class="admin-section__title">Image Management</h2>
 						<Show
 							when={images().length > 0}
-							fallback={<p>No images uploaded yet.</p>}
+							fallback={
+								<p class="text-muted">
+									No images uploaded yet.
+								</p>
+							}
 						>
-							<table>
-								<thead>
-									<tr>
-										<th>Filename</th>
-										<th>Actions</th>
-									</tr>
-								</thead>
-								<tbody>
-									<For each={images()}>
-										{(image) => (
-											<tr>
-												<td>{image}</td>
-												<td>
-													<button
-														onClick={() =>
-															setPreviewImage(
-																image
-															)
-														}
-													>
-														Preview
-													</button>
-													<button
-														onClick={() =>
-															deleteImage(image)
-														}
-													>
-														Delete
-													</button>
-												</td>
-											</tr>
-										)}
-									</For>
-								</tbody>
-							</table>
+							<div class="admin-images">
+								<For each={images()}>
+									{(image) => (
+										<div class="admin-image">
+											<img
+												src={`/api/uploads/${image}`}
+												alt={image}
+												loading="lazy"
+											/>
+											<div class="admin-image__overlay">
+												<button
+													class="admin-image__btn"
+													onClick={() =>
+														setPreviewImage(image)
+													}
+													aria-label="Preview"
+												>
+													👁
+												</button>
+												<button
+													class="admin-image__btn admin-image__btn--delete"
+													onClick={() =>
+														deleteImage(image)
+													}
+													aria-label="Delete"
+												>
+													×
+												</button>
+											</div>
+										</div>
+									)}
+								</For>
+							</div>
 						</Show>
 
 						<Show when={previewImage()}>
-							<div onClick={() => setPreviewImage(null)}>
-								<div onClick={(e) => e.stopPropagation()}>
-									<img
-										src={`/api/uploads/${previewImage()}`}
-										alt={previewImage()!}
-									/>
-									<button
-										onClick={() => setPreviewImage(null)}
-									>
-										×
-									</button>
-								</div>
+							<div
+								class="lightbox"
+								onClick={() => setPreviewImage(null)}
+							>
+								<button
+									class="lightbox__close"
+									onClick={() => setPreviewImage(null)}
+									aria-label="Close"
+								>
+									×
+								</button>
+								<img
+									src={`/api/uploads/${previewImage()}`}
+									alt={previewImage()!}
+									onClick={(e) => e.stopPropagation()}
+								/>
 							</div>
 						</Show>
 					</div>

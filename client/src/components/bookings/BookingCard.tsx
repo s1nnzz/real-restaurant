@@ -18,13 +18,14 @@ export default function BookingCard(props: BookingCardProps) {
 
 	const formatDate = (dateString: string) => {
 		const date = new Date(dateString);
-		return date.toLocaleString("en-US", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-			hour: "2-digit",
-			minute: "2-digit",
-		});
+		return {
+			day: date.getDate(),
+			month: date.toLocaleString("en-US", { month: "short" }),
+			time: date.toLocaleString("en-US", {
+				hour: "2-digit",
+				minute: "2-digit",
+			}),
+		};
 	};
 
 	const handleDelete = async () => {
@@ -58,30 +59,39 @@ export default function BookingCard(props: BookingCardProps) {
 	};
 
 	return (
-		<div>
-			<div>
-				<h3>Booking #{props.booking.booking_id}</h3>
-				<span>{formatDate(props.booking.booking_date)}</span>
+		<article class="booking-card">
+			<div class="booking-card__date">
+				<span class="booking-card__day">
+					{formatDate(props.booking.booking_date).day}
+				</span>
+				<span class="booking-card__month">
+					{formatDate(props.booking.booking_date).month}
+				</span>
 			</div>
-			<div>
-				<div>
-					<span>Party Size:</span>
-					<span>{props.booking.party_size} people</span>
-				</div>
-				<div>
-					<span>Table:</span>
-					<span>Table {props.booking.table_number}</span>
-				</div>
+			<div class="booking-card__info">
+				<span class="booking-card__time">
+					{formatDate(props.booking.booking_date).time}
+				</span>
+				<span class="booking-card__details">
+					{props.booking.party_size}{" "}
+					{props.booking.party_size === 1 ? "guest" : "guests"} ·
+					Table {props.booking.table_number}
+				</span>
 				{props.booking.special_instructions && (
-					<div>
-						<span>Special Instructions:</span>
-						<span>{props.booking.special_instructions}</span>
-					</div>
+					<span class="booking-card__details text-muted">
+						"{props.booking.special_instructions}"
+					</span>
 				)}
 			</div>
-			<button onClick={handleDelete} disabled={deleting()}>
-				{deleting() ? "Deleting..." : "Delete Booking"}
-			</button>
-		</div>
+			<div class="booking-card__actions">
+				<button
+					class="btn btn--outline btn--small"
+					onClick={handleDelete}
+					disabled={deleting()}
+				>
+					{deleting() ? "Cancelling..." : "Cancel"}
+				</button>
+			</div>
+		</article>
 	);
 }

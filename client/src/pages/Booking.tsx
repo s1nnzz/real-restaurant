@@ -25,28 +25,46 @@ export default function Booking() {
 	}
 
 	return (
-		<div>
-			<div>
-				<div>
-					<h1>
-						{view() === "create" ? "Make a Booking" : "My Bookings"}
+		<div class="booking-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">
+						{view() === "create"
+							? "Reserve a Table"
+							: "Your Reservations"}
 					</h1>
-					<div>
+					<p class="page-header__subtitle">
+						{view() === "create"
+							? "Select your preferred date and time"
+							: "Manage your upcoming visits"}
+					</p>
+				</div>
+			</div>
+
+			<div class="container">
+				<div class="booking-header">
+					<div class="booking-tabs">
 						<button
+							class={`booking-tab ${
+								view() === "list" ? "booking-tab--active" : ""
+							}`}
 							onClick={() => {
 								setView("list");
 								navigate("/bookings");
 							}}
 						>
-							My Bookings
+							My Reservations
 						</button>
 						<button
+							class={`booking-tab ${
+								view() === "create" ? "booking-tab--active" : ""
+							}`}
 							onClick={() => {
 								setView("create");
 								navigate("/book");
 							}}
 						>
-							New Booking
+							New Reservation
 						</button>
 					</div>
 				</div>

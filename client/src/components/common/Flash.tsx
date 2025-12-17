@@ -6,9 +6,15 @@ export default function Flash() {
 
 	return (
 		<Show when={flash()}>
-			<div>
-				<p>{flash()!.message}</p>
-				<button onClick={clearFlash}>x</button>
+			<div class={`flash flash--${flash()!.type}`} role="alert">
+				<p class="flash__message">{flash()!.message}</p>
+				<button
+					class="flash__close"
+					onClick={clearFlash}
+					aria-label="Dismiss"
+				>
+					×
+				</button>
 			</div>
 		</Show>
 	);

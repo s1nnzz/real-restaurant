@@ -60,70 +60,130 @@ export default function Menu() {
 	};
 
 	return (
-		<div>
-			<div>
-				<h1>Our Menu</h1>
-				<button onClick={openPanel}>
-					🛒
-					<Show when={itemCount() > 0}>
-						<span>{itemCount()}</span>
-					</Show>
-				</button>
+		<div class="menu-page">
+			{/* Page Header */}
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Our Menu</h1>
+					<p class="page-header__subtitle">
+						Seasonal dishes crafted with care
+					</p>
+				</div>
 			</div>
 
-			<Show when={!menuItems.loading} fallback={<p>Loading menu...</p>}>
-				<Show when={menuItems()} fallback={<p>Failed to load menu</p>}>
-					<div>
-						<button onClick={() => setSelectedCategory(null)}>
-							All
-						</button>
-						<For each={categories()}>
-							{(category) => (
-								<button
-									onClick={() =>
-										setSelectedCategory(category)
-									}
-								>
-									{category}
-								</button>
-							)}
-						</For>
+			<div class="container">
+				<div class="menu-header">
+					<div class="menu-header__title">
+						<h2>À La Carte</h2>
 					</div>
+					<button class="cart-btn" onClick={openPanel}>
+						🛒
+						<Show when={itemCount() > 0}>
+							<span class="cart-btn__count">{itemCount()}</span>
+						</Show>
+					</button>
+				</div>
 
-					<div>
-						<For each={filteredItems()}>
-							{(item) => (
-								<div>
-									<Show when={item.image_url}>
-										<img
-											src={item.image_url!}
-											alt={item.name}
-										/>
-									</Show>
-									<div>
-										<h3>{item.name}</h3>
-										<p>{item.category}</p>
-										<Show when={item.description}>
-											<p>{item.description}</p>
+				<Show
+					when={!menuItems.loading}
+					fallback={
+						<div class="loading">
+							<div class="spinner"></div>
+							<p>Loading menu...</p>
+						</div>
+					}
+				>
+					<Show
+						when={menuItems()}
+						fallback={
+							<p class="text-center text-muted">
+								Failed to load menu
+							</p>
+						}
+					>
+						<div class="menu-filters">
+							<button
+								class={`menu-filter ${
+									selectedCategory() === null
+										? "menu-filter--active"
+										: ""
+								}`}
+								onClick={() => setSelectedCategory(null)}
+							>
+								All
+							</button>
+							<For each={categories()}>
+								{(category) => (
+									<button
+										class={`menu-filter ${
+											selectedCategory() === category
+												? "menu-filter--active"
+												: ""
+										}`}
+										onClick={() =>
+											setSelectedCategory(category)
+										}
+									>
+										{category}
+									</button>
+								)}
+							</For>
+						</div>
+
+						<div class="menu-grid">
+							<For each={filteredItems()}>
+								{(item) => (
+									<article class="card">
+										<Show when={item.image_url}>
+											<img
+												class="card__image"
+												src={item.image_url!}
+												alt={item.name}
+												loading="lazy"
+											/>
 										</Show>
-										<p>£{Number(item.price).toFixed(2)}</p>
-										<button
-											onClick={() => addToCart(item.id)}
-											disabled={
-												addingToCart() === item.id
-											}
-										>
-											{addingToCart() === item.id
-												? "Adding..."
-												: "Add to Cart"}
-										</button>
-									</div>
-								</div>
-							)}
-						</For>
-					</div>
+										<div class="card__body">
+											<span class="card__category">
+												{item.category}
+											</span>
+											<h3 class="card__title">
+												{item.name}
+											</h3>
+											<Show when={item.description}>
+												<p class="card__description">
+													{item.description}
+												</p>
+											</Show>
+											<div class="card__footer">
+												<span class="card__price">
+													£
+													{Number(item.price).toFixed(
+														2
+													)}
+												</span>
+												<button
+													class="btn btn--primary btn--small"
+													onClick={() =>
+														addToCart(item.id)
+													}
+													disabled={
+														addingToCart() ===
+														item.id
+													}
+												>
+													{addingToCart() === item.id
+														? "Adding..."
+														: "Add to Cart"}
+												</button>
+											</div>
+										</div>
+									</article>
+								)}
+							</For>
+						</div>
+					</Show>
 				</Show>
-			</Show>
+			</div>
 
 			{/* Cart Side Panel */}
 			<CartSidePanel />

@@ -28,26 +28,33 @@ export default function Login() {
 	};
 
 	return (
-		<div>
-			<div>
-				<h1>Login</h1>
+		<div class="auth-page">
+			<div class="auth-card">
+				<h1 class="auth-card__title">Welcome Back</h1>
 
 				<Form onSubmit={handleSubmit}>
-					<div>
-						<label for="email">Email</label>
+					<div class="form-group">
+						<label class="form-label" for="email">
+							Email
+						</label>
 						<input
+							class="form-input"
 							type="email"
 							id="email"
 							value={email()}
 							onInput={(e) => setEmail(e.currentTarget.value)}
 							required
 							disabled={loading()}
+							placeholder="your@email.com"
 						/>
 					</div>
 
-					<div>
-						<label for="password">Password</label>
+					<div class="form-group">
+						<label class="form-label" for="password">
+							Password
+						</label>
 						<input
+							class="form-input"
 							type="password"
 							id="password"
 							value={password()}
@@ -55,20 +62,28 @@ export default function Login() {
 							required
 							disabled={loading()}
 							minLength={8}
+							placeholder="••••••••"
 						/>
 					</div>
 
-					<button type="submit" disabled={loading()}>
-						{loading() ? "Logging in..." : "Login"}
-					</button>
-				</Form>
+					<div class="form-footer">
+						<button
+							class="btn btn--primary btn--full"
+							type="submit"
+							disabled={loading()}
+						>
+							{loading() ? "Signing in..." : "Sign In"}
+						</button>
 
-				<p>
-					Don't have an account? <a href="/register">Register</a>
-				</p>
-				<p>
-					<a href="/forgot">Forgot password?</a>
-				</p>
+						<p>
+							Don't have an account?{" "}
+							<a href="/register">Create one</a>
+						</p>
+						<p>
+							<a href="/forgot">Forgot your password?</a>
+						</p>
+					</div>
+				</Form>
 			</div>
 		</div>
 	);

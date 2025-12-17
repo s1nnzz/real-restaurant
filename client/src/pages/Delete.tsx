@@ -36,20 +36,23 @@ export default function Delete() {
 	}
 
 	return (
-		<div>
-			<div>
-				<h1>Delete Account</h1>
-				<div>
-					<h3>⚠️ Warning</h3>
+		<div class="auth-page">
+			<div class="auth-card">
+				<h1 class="auth-card__title">Delete Account</h1>
+				<div class="alert alert--warning mb-lg">
+					<strong>⚠️ Warning</strong>
 					<p>
 						This action is permanent and cannot be undone. All your
 						data, including bookings, will be deleted.
 					</p>
 				</div>
 
-				<div>
-					<label for="confirm">Type DELETE to confirm:</label>
+				<div class="form-group">
+					<label class="form-label" for="confirm">
+						Type DELETE to confirm:
+					</label>
 					<input
+						class="form-input"
 						type="text"
 						id="confirm"
 						value={confirmText()}
@@ -59,8 +62,9 @@ export default function Delete() {
 					/>
 				</div>
 
-				<div>
+				<div class="auth-card__actions">
 					<button
+						class="btn btn--danger"
 						type="button"
 						onClick={handleDelete}
 						disabled={loading() || confirmText() !== "DELETE"}
@@ -68,6 +72,7 @@ export default function Delete() {
 						{loading() ? "Deleting..." : "Delete Account"}
 					</button>
 					<button
+						class="btn btn--secondary"
 						type="button"
 						onClick={() => navigate("/profile")}
 						disabled={loading()}

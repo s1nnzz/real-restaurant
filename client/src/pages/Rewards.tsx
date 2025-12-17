@@ -37,30 +37,49 @@ export default function Rewards() {
 	};
 
 	return (
-		<div>
-			<h1>Your Rewards</h1>
+		<div class="rewards-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Your Rewards</h1>
+					<p class="page-header__subtitle">
+						Earn rewards with every order
+					</p>
+				</div>
+			</div>
 
-			<Show when={!authLoading()}>
-				<Show
-					when={user()}
-					fallback={
-						<div>
-							<p>Please log in to view your rewards.</p>
-							<A href="/login">Login</A>
-						</div>
-					}
-				>
+			<div class="container">
+				<Show when={!authLoading()}>
 					<Show
-						when={!rewardsData.loading}
-						fallback={<p>Loading rewards...</p>}
+						when={user()}
+						fallback={
+							<div class="empty-state">
+								<h3 class="empty-state__title">
+									Please Sign In
+								</h3>
+								<p class="empty-state__text">
+									You need to be logged in to view your
+									rewards.
+								</p>
+								<A href="/login" class="btn btn--primary">
+									Sign In
+								</A>
+							</div>
+						}
 					>
-						<Show when={rewardsData()}>
-							{(data) => (
-								<>
-									<div>
-										<div>
-											<span>Available Balance</span>
-											<span>
+						<Show
+							when={!rewardsData.loading}
+							fallback={
+								<div class="loading">
+									<div class="spinner"></div>
+									<p>Loading rewards...</p>
+								</div>
+							}
+						>
+							<Show when={rewardsData()}>
+								{(data) => (
+									<>
+										<div class="rewards-balance">
+											<span class="rewards-balance__amount">
 												£
 												{Number(data().availableTotal) %
 													1 ===
@@ -74,95 +93,118 @@ export default function Rewards() {
 																.availableTotal
 													  ).toFixed(2)}
 											</span>
+											<p class="rewards-balance__label">
+												Available Balance
+											</p>
 										</div>
-										<p>
-											Earn £2 for every £10 you spend! Use
-											your rewards at checkout to save
-											money.
-										</p>
-									</div>
 
-									<Show
-										when={data().rewards.length > 0}
-										fallback={
-											<div>
-												<p>
-													You don't have any rewards
-													yet.
-												</p>
-												<p>
-													Place an order of £10 or
-													more to start earning!
-												</p>
-												<A href="/menu">Browse Menu</A>
-											</div>
-										}
-									>
-										<h2>Reward History</h2>
-										<div>
-											<For each={data().rewards}>
-												{(reward) => (
-													<div>
-														<div>
-															<span>
-																£
-																{Number(
-																	reward.amount
-																) %
-																	1 ===
-																0
-																	? Number(
-																			reward.amount
-																	  )
-																	: Number(
-																			reward.amount
-																	  ).toFixed(
-																			2
-																	  )}
-															</span>
-															<span>
-																{formatDate(
-																	reward.created_at
-																)}
-															</span>
-														</div>
-														<div>
-															<Show
-																when={
-																	reward.used
-																}
-																fallback={
-																	<span>
-																		Available
-																	</span>
-																}
-															>
-																<span>
-																	Used on
-																	Order #
-																	{
-																		reward.used_on_order_id
-																	}
-																</span>
-															</Show>
-														</div>
-														<div>
-															From Order #
-															{
-																reward.from_order_id
-															}
-														</div>
+										<div class="rewards-info">
+											<p class="text-center mb-lg">
+												Earn{" "}
+												<strong class="text-accent">
+													£2
+												</strong>{" "}
+												for every <strong>£10</strong>{" "}
+												you spend! Use your rewards at
+												checkout to save on your next
+												order.
+											</p>
+
+											<Show
+												when={data().rewards.length > 0}
+												fallback={
+													<div class="empty-state">
+														<svg
+															class="empty-state__icon"
+															viewBox="0 0 24 24"
+															fill="none"
+															stroke="currentColor"
+															stroke-width="1.5"
+														>
+															<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+														</svg>
+														<h3 class="empty-state__title">
+															Start Earning
+															Rewards
+														</h3>
+														<p class="empty-state__text">
+															Place an order of
+															£10 or more to earn
+															your first rewards!
+														</p>
+														<A
+															href="/menu"
+															class="btn btn--primary"
+														>
+															Browse Menu
+														</A>
 													</div>
-												)}
-											</For>
+												}
+											>
+												<h2 class="mt-xl mb-lg">
+													Reward History
+												</h2>
+												<div class="orders-list">
+													<For each={data().rewards}>
+														{(reward) => (
+															<div class="order-card">
+																<div class="order-card__header">
+																	<div>
+																		<span class="order-card__id">
+																			From
+																			Order
+																			#
+																			{
+																				reward.from_order_id
+																			}
+																		</span>
+																		<p class="order-card__date">
+																			{formatDate(
+																				reward.created_at
+																			)}
+																		</p>
+																	</div>
+																	<span
+																		class={`status ${
+																			reward.used
+																				? "status--info"
+																				: "status--success"
+																		}`}
+																	>
+																		{reward.used
+																			? `Used on #${reward.used_on_order_id}`
+																			: "Available"}
+																	</span>
+																</div>
+																<div class="order-card__total">
+																	£
+																	{Number(
+																		reward.amount
+																	) %
+																		1 ===
+																	0
+																		? Number(
+																				reward.amount
+																		  )
+																		: Number(
+																				reward.amount
+																		  ).toFixed(
+																				2
+																		  )}
+																</div>
+															</div>
+														)}
+													</For>
+												</div>
+											</Show>
 										</div>
-									</Show>
-								</>
-							)}
+									</>
+								)}
+							</Show>
 						</Show>
 					</Show>
 				</Show>
-			</Show>
+			</div>
 		</div>
 	);
 }

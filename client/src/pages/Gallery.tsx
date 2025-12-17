@@ -32,31 +32,32 @@ export default function Gallery() {
 	}
 
 	return (
-		<div>
-			<div>
-				<h1>Gallery</h1>
-				<p>Browse our collection of images</p>
+		<div class="gallery-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Gallery</h1>
+					<p class="page-header__subtitle">
+						A glimpse into our world
+					</p>
+				</div>
 			</div>
 
-			<Show when={loading()}>
-				<div>
-					<p>Loading images...</p>
-				</div>
-			</Show>
+			<div class="container">
+				<Show when={loading()}>
+					<div class="loading">
+						<div class="spinner"></div>
+						<p>Loading gallery...</p>
+					</div>
+				</Show>
 
-			<Show when={!loading() && files().length === 0}>
-				<div>
-					<div>
+				<Show when={!loading() && files().length === 0}>
+					<div class="empty-state">
 						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="64"
-							height="64"
+							class="empty-state__icon"
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
 							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
 						>
 							<rect
 								x="3"
@@ -69,48 +70,45 @@ export default function Gallery() {
 							<circle cx="8.5" cy="8.5" r="1.5" />
 							<polyline points="21 15 16 10 5 21" />
 						</svg>
+						<h3 class="empty-state__title">No Images Yet</h3>
+						<p class="empty-state__text">
+							Our gallery is being curated. Check back soon!
+						</p>
 					</div>
-					<p>No images uploaded yet</p>
-				</div>
-			</Show>
+				</Show>
 
-			<Show when={!loading() && files().length > 0}>
-				<div>
-					<For each={files()}>
-						{(file) => (
-							<div onClick={() => openLightbox(file)}>
-								<img
-									src={`/api/uploads/${file}`}
-									alt={file}
-									loading="lazy"
-								/>
-								<div>
-									<span>{file}</span>
+				<Show when={!loading() && files().length > 0}>
+					<div class="gallery-grid">
+						<For each={files()}>
+							{(file) => (
+								<div
+									class="gallery-item"
+									onClick={() => openLightbox(file)}
+								>
+									<img
+										src={`/api/uploads/${file}`}
+										alt={file}
+										loading="lazy"
+									/>
+									<div class="gallery-item__overlay">
+										<span>{file}</span>
+									</div>
 								</div>
-							</div>
-						)}
-					</For>
-				</div>
-			</Show>
+							)}
+						</For>
+					</div>
+				</Show>
+			</div>
 
 			{/* Lightbox */}
 			<Show when={selectedImage()}>
-				<div onClick={closeLightbox}>
-					<button onClick={closeLightbox}>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-							fill="none"
-							stroke="currentColor"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							<line x1="18" y1="6" x2="6" y2="18" />
-							<line x1="6" y1="6" x2="18" y2="18" />
-						</svg>
+				<div class="lightbox" onClick={closeLightbox}>
+					<button
+						class="lightbox__close"
+						onClick={closeLightbox}
+						aria-label="Close"
+					>
+						×
 					</button>
 					<img
 						src={`/api/uploads/${selectedImage()}`}

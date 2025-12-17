@@ -85,101 +85,154 @@ export default function Cart() {
 	};
 
 	return (
-		<div>
-			<h1>Your Cart</h1>
+		<div class="cart-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Your Cart</h1>
+					<p class="page-header__subtitle">
+						Review your order before checkout
+					</p>
+				</div>
+			</div>
 
-			<Show when={!authLoading()}>
-				<Show
-					when={user()}
-					fallback={
-						<div>
-							<p>Please log in to view your cart.</p>
-							<A href="/login">Login</A>
-						</div>
-					}
-				>
-					<Show when={!isLoading()} fallback={<p>Loading cart...</p>}>
+			<div class="container">
+				<Show when={!authLoading()}>
+					<Show
+						when={user()}
+						fallback={
+							<div class="empty-state">
+								<h3 class="empty-state__title">
+									Please Sign In
+								</h3>
+								<p class="empty-state__text">
+									You need to be logged in to view your cart.
+								</p>
+								<A href="/login" class="btn btn--primary">
+									Sign In
+								</A>
+							</div>
+						}
+					>
 						<Show
-							when={cartWithDetails().length > 0}
+							when={!isLoading()}
 							fallback={
-								<div>
-									<p>Your cart is empty.</p>
-									<A href="/menu">Browse Menu</A>
+								<div class="loading">
+									<div class="spinner"></div>
+									<p>Loading cart...</p>
 								</div>
 							}
 						>
-							<div>
-								<For each={cartWithDetails()}>
-									{(item) => (
-										<Show when={item.details}>
-											<div>
-												<div>
-													<h3>
-														{item.details!.name}
-													</h3>
-													<p>
-														£
-														{Number(
-															item.details!.price
-														).toFixed(2)}{" "}
-														each
-													</p>
-												</div>
-												<div>
-													<button
-														onClick={() =>
-															updateQuantity(
-																item.menuItemId,
-																item.quantity -
-																	1
-															)
-														}
-													>
-														-
-													</button>
-													<span>{item.quantity}</span>
-													<button
-														onClick={() =>
-															updateQuantity(
-																item.menuItemId,
-																item.quantity +
-																	1
-															)
-														}
-													>
-														+
-													</button>
-													<span>
-														£
-														{(
-															Number(
+							<Show
+								when={cartWithDetails().length > 0}
+								fallback={
+									<div class="empty-state">
+										<svg
+											class="empty-state__icon"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="1.5"
+										>
+											<circle cx="9" cy="21" r="1" />
+											<circle cx="20" cy="21" r="1" />
+											<path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6" />
+										</svg>
+										<h3 class="empty-state__title">
+											Your Cart is Empty
+										</h3>
+										<p class="empty-state__text">
+											Discover our menu and add some
+											delicious dishes.
+										</p>
+										<A
+											href="/menu"
+											class="btn btn--primary"
+										>
+											Browse Menu
+										</A>
+									</div>
+								}
+							>
+								<div class="cart-list">
+									<For each={cartWithDetails()}>
+										{(item) => (
+											<Show when={item.details}>
+												<div class="cart-item">
+													<div class="cart-item__info">
+														<h3 class="cart-item__name">
+															{item.details!.name}
+														</h3>
+														<p class="cart-item__price">
+															£
+															{Number(
 																item.details!
 																	.price
-															) * item.quantity
-														).toFixed(2)}
-													</span>
-													<button
-														onClick={() =>
-															removeItem(
-																item.menuItemId
-															)
-														}
-													>
-														Remove
-													</button>
+															).toFixed(2)}{" "}
+															each
+														</p>
+													</div>
+													<div class="cart-item__controls">
+														<div class="quantity-control">
+															<button
+																onClick={() =>
+																	updateQuantity(
+																		item.menuItemId,
+																		item.quantity -
+																			1
+																	)
+																}
+															>
+																−
+															</button>
+															<span>
+																{item.quantity}
+															</span>
+															<button
+																onClick={() =>
+																	updateQuantity(
+																		item.menuItemId,
+																		item.quantity +
+																			1
+																	)
+																}
+															>
+																+
+															</button>
+														</div>
+														<span class="cart-item__total">
+															£
+															{(
+																Number(
+																	item.details!
+																		.price
+																) *
+																item.quantity
+															).toFixed(2)}
+														</span>
+														<button
+															class="cart-item__remove"
+															onClick={() =>
+																removeItem(
+																	item.menuItemId
+																)
+															}
+															aria-label="Remove item"
+														>
+															×
+														</button>
+													</div>
 												</div>
-											</div>
-										</Show>
-									)}
-								</For>
-							</div>
+											</Show>
+										)}
+									</For>
+								</div>
 
-							<div>
-								<Show when={(rewardsBalance() || 0) > 0}>
-									<div>
-										<label>
+								<div class="cart-summary">
+									<Show when={(rewardsBalance() || 0) > 0}>
+										<div class="checkbox-group">
 											<input
 												type="checkbox"
+												id="use-rewards"
 												checked={useRewards()}
 												onChange={(e) =>
 													setUseRewards(
@@ -187,61 +240,63 @@ export default function Cart() {
 													)
 												}
 											/>
-											<span>
+											<label for="use-rewards">
 												Use rewards (£
 												{Number(
 													rewardsBalance()
 												).toFixed(2)}{" "}
 												available)
-											</span>
-										</label>
-										<Show
-											when={
-												useRewards() &&
-												rewardsDiscount() > 0
-											}
-										>
-											<div>
-												Rewards discount: -£
-												{rewardsDiscount().toFixed(2)}
-											</div>
-										</Show>
-									</div>
-								</Show>
+											</label>
+										</div>
+									</Show>
 
-								<div>
 									<Show
 										when={
 											useRewards() &&
 											rewardsDiscount() > 0
 										}
 									>
-										<div>
-											<span>Subtotal:</span> £
-											{total().toFixed(2)}
+										<div class="cart-summary__row">
+											<span>Subtotal</span>
+											<span>£{total().toFixed(2)}</span>
+										</div>
+										<div class="cart-summary__row cart-summary__discount">
+											<span>Rewards Discount</span>
+											<span>
+												-£{rewardsDiscount().toFixed(2)}
+											</span>
 										</div>
 									</Show>
-									<strong>Total:</strong> £
-									{finalTotal().toFixed(2)}
+
+									<div class="cart-summary__row cart-summary__row--total">
+										<span>Total</span>
+										<span>£{finalTotal().toFixed(2)}</span>
+									</div>
+
+									<div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+										<button
+											class="btn btn--outline"
+											onClick={clearCart}
+										>
+											Clear Cart
+										</button>
+										<button
+											class="btn btn--primary"
+											style="flex: 1;"
+											onClick={checkout}
+											disabled={checkingOut()}
+										>
+											{checkingOut()
+												? "Processing..."
+												: "Proceed to Checkout"}
+										</button>
+									</div>
 								</div>
-								<div>
-									<button onClick={clearCart}>
-										Clear Cart
-									</button>
-									<button
-										onClick={checkout}
-										disabled={checkingOut()}
-									>
-										{checkingOut()
-											? "Processing..."
-											: "Checkout"}
-									</button>
-								</div>
-							</div>
+							</Show>
 						</Show>
 					</Show>
 				</Show>
-			</Show>
+			</div>
 		</div>
 	);
 }

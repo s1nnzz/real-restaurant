@@ -62,14 +62,17 @@ export default function ResetPassword() {
 	};
 
 	return (
-		<div>
-			<div>
-				<h1>Reset Password</h1>
+		<div class="auth-page">
+			<div class="auth-card">
+				<h1 class="auth-card__title">Reset Password</h1>
 
 				<Form onSubmit={handleSubmit}>
-					<div>
-						<label for="token">Reset Token</label>
+					<div class="form-group">
+						<label class="form-label" for="token">
+							Reset Token
+						</label>
 						<input
+							class="form-input"
 							type="text"
 							id="token"
 							value={token()}
@@ -79,9 +82,12 @@ export default function ResetPassword() {
 						/>
 					</div>
 
-					<div>
-						<label for="new-password">New Password</label>
+					<div class="form-group">
+						<label class="form-label" for="new-password">
+							New Password
+						</label>
 						<input
+							class="form-input"
 							type="password"
 							id="new-password"
 							value={newPassword()}
@@ -94,11 +100,12 @@ export default function ResetPassword() {
 						/>
 					</div>
 
-					<div>
-						<label for="confirm-password">
+					<div class="form-group">
+						<label class="form-label" for="confirm-password">
 							Confirm New Password
 						</label>
 						<input
+							class="form-input"
 							type="password"
 							id="confirm-password"
 							value={confirmPassword()}
@@ -111,7 +118,11 @@ export default function ResetPassword() {
 						/>
 					</div>
 
-					<button type="submit" disabled={loading()}>
+					<button
+						class="btn btn--primary btn--full"
+						type="submit"
+						disabled={loading()}
+					>
 						{loading() ? "Resetting..." : "Reset Password"}
 					</button>
 				</Form>

@@ -65,38 +65,64 @@ export default function CartSidePanel() {
 	return (
 		<>
 			{/* Overlay */}
-			<div onClick={closePanel} />
+			<div
+				class={`cart-overlay ${
+					isPanelOpen() ? "cart-overlay--open" : ""
+				}`}
+				onClick={closePanel}
+			/>
 
 			{/* Side Panel */}
-			<div>
-				<div>
+			<div
+				class={`cart-panel ${isPanelOpen() ? "cart-panel--open" : ""}`}
+			>
+				<div class="cart-panel__header">
 					<h2>Your Cart ({itemCount()})</h2>
-					<button onClick={closePanel}>✕</button>
+					<button
+						class="cart-panel__close"
+						onClick={closePanel}
+						aria-label="Close cart"
+					>
+						✕
+					</button>
 				</div>
 
-				<div>
-					<Show when={!isLoading()} fallback={<p>Loading cart...</p>}>
+				<div class="cart-panel__content">
+					<Show
+						when={!isLoading()}
+						fallback={
+							<div class="loading">
+								<div class="spinner"></div>
+								<p>Loading cart...</p>
+							</div>
+						}
+					>
 						<Show
 							when={cartWithDetails().length > 0}
 							fallback={
-								<div>
-									<p>Your cart is empty</p>
-									<button onClick={closePanel}>
+								<div class="empty-state">
+									<p class="empty-state__text">
+										Your cart is empty
+									</p>
+									<button
+										class="btn btn--primary"
+										onClick={closePanel}
+									>
 										Continue Shopping
 									</button>
 								</div>
 							}
 						>
-							<div>
+							<div class="cart-panel__items">
 								<For each={cartWithDetails()}>
 									{(item) => (
 										<Show when={item.details}>
-											<div>
-												<div>
-													<h4>
+											<div class="cart-panel__item">
+												<div class="cart-panel__item-info">
+													<h4 class="cart-panel__item-name">
 														{item.details!.name}
 													</h4>
-													<p>
+													<p class="cart-panel__item-price">
 														£
 														{Number(
 															item.details!.price
@@ -104,9 +130,10 @@ export default function CartSidePanel() {
 														each
 													</p>
 												</div>
-												<div>
-													<div>
+												<div class="cart-panel__item-controls">
+													<div class="quantity-control">
 														<button
+															class="quantity-control__btn"
 															onClick={() =>
 																updateQuantity(
 																	item.menuItemId,
@@ -114,13 +141,15 @@ export default function CartSidePanel() {
 																		1
 																)
 															}
+															aria-label="Decrease quantity"
 														>
 															-
 														</button>
-														<span>
+														<span class="quantity-control__value">
 															{item.quantity}
 														</span>
 														<button
+															class="quantity-control__btn"
 															onClick={() =>
 																updateQuantity(
 																	item.menuItemId,
@@ -128,11 +157,12 @@ export default function CartSidePanel() {
 																		1
 																)
 															}
+															aria-label="Increase quantity"
 														>
 															+
 														</button>
 													</div>
-													<span>
+													<span class="cart-panel__item-subtotal">
 														£
 														{(
 															Number(
@@ -142,11 +172,13 @@ export default function CartSidePanel() {
 														).toFixed(2)}
 													</span>
 													<button
+														class="cart-panel__item-remove"
 														onClick={() =>
 															removeItem(
 																item.menuItemId
 															)
 														}
+														aria-label="Remove item"
 													>
 														✕
 													</button>
@@ -161,22 +193,34 @@ export default function CartSidePanel() {
 				</div>
 
 				<Show when={cartWithDetails().length > 0}>
-					<div>
-						<div>
+					<div class="cart-panel__footer">
+						<div class="cart-panel__total">
 							<strong>Total:</strong>
-							<span>£{total().toFixed(2)}</span>
+							<span class="cart-panel__total-amount">
+								£{total().toFixed(2)}
+							</span>
 						</div>
-						<div>
-							<button onClick={clearCart}>Clear Cart</button>
+						<div class="cart-panel__actions">
+							<button
+								class="btn btn--secondary"
+								onClick={clearCart}
+							>
+								Clear Cart
+							</button>
 							<Show
 								when={user()}
 								fallback={
-									<A href="/login" onClick={closePanel}>
+									<A
+										href="/login"
+										class="btn btn--primary"
+										onClick={closePanel}
+									>
 										Login to Checkout
 									</A>
 								}
 							>
 								<button
+									class="btn btn--primary"
 									onClick={checkout}
 									disabled={checkingOut()}
 								>

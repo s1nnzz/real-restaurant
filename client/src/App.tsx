@@ -26,7 +26,7 @@ import CheckoutCancelled from "./pages/CheckoutCancelled";
 import Upload from "./pages/Upload";
 import Gallery from "./pages/Gallery";
 import NotFound from "./pages/NotFound";
-// import "./App.css";
+import "./App.css";
 
 const App = () => {
 	return (
@@ -35,9 +35,14 @@ const App = () => {
 				<FlashProvider>
 					<AuthProvider>
 						<CartProvider>
+							<a href="#main-content" class="skip-link">
+								Skip to main content
+							</a>
 							<Nav />
 							<Flash />
-							<div>{props.children}</div>
+							<main id="main-content" class="main">
+								{props.children}
+							</main>
 							<Footer />
 						</CartProvider>
 					</AuthProvider>

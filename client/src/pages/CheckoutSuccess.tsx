@@ -18,39 +18,62 @@ export default function CheckoutSuccess() {
 	const [verification] = createResource(() => user(), verifyPayment);
 
 	return (
-		<div>
-			<div>
+		<div class="status-page">
+			<div class="status-card">
 				<Show
 					when={!verification.loading}
-					fallback={<p>Verifying payment...</p>}
+					fallback={
+						<div class="loading">
+							<div class="spinner"></div>
+							<p>Verifying payment...</p>
+						</div>
+					}
 				>
 					<Show
 						when={verification()?.success}
 						fallback={
 							<>
-								<h1>⚠️ Payment Verification</h1>
-								<p>
+								<div class="status-card__icon status-card__icon--warning">
+									⚠️
+								</div>
+								<h1 class="status-card__title">
+									Payment Verification
+								</h1>
+								<p class="status-card__text">
 									We couldn't verify your payment status.
 									Please check your orders.
 								</p>
-								<div>
-									<A href="/orders">View Orders</A>
-									<A href="/">Go Home</A>
+								<div class="status-card__actions">
+									<A href="/orders" class="btn btn--primary">
+										View Orders
+									</A>
+									<A href="/" class="btn btn--secondary">
+										Go Home
+									</A>
 								</div>
 							</>
 						}
 					>
-						<h1>🎉 Payment Successful!</h1>
-						<p>
+						<div class="status-card__icon status-card__icon--success">
+							🎉
+						</div>
+						<h1 class="status-card__title">Payment Successful!</h1>
+						<p class="status-card__text">
 							Thank you for your order. Your payment has been
 							processed successfully.
 						</p>
 						<Show when={verification()?.orderId}>
-							<p>Order #{verification()?.orderId}</p>
+							<p class="status-card__order-id">
+								Order #{verification()?.orderId}
+							</p>
 						</Show>
-						<div>
-							<A href="/orders">View Orders</A>
-							<A href="/menu">Continue Shopping</A>
+						<div class="status-card__actions">
+							<A href="/orders" class="btn btn--primary">
+								View Orders
+							</A>
+							<A href="/menu" class="btn btn--secondary">
+								Continue Shopping
+							</A>
 						</div>
 					</Show>
 				</Show>

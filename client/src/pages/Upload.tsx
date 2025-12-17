@@ -68,55 +68,76 @@ export default function Upload() {
 	}
 
 	return (
-		<div>
-			<div>
-				<h1>Upload File</h1>
-				<p>Upload images for the menu or gallery</p>
+		<div class="upload-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">Upload File</h1>
+					<p class="page-header__subtitle">
+						Upload images for the menu or gallery
+					</p>
+				</div>
+			</div>
 
-				<form onSubmit={handleUpload}>
-					<div
-						onDragOver={handleDragOver}
-						onDragLeave={handleDragLeave}
-						onDrop={handleDrop}
-					>
-						<input
-							type="file"
-							name="file"
-							id="file-input"
-							required
-							onChange={handleFileChange}
-						/>
-						<label for="file-input">
-							<div>
-								<svg
-									xmlns="http://www.w3.org/2000/svg"
-									width="48"
-									height="48"
-									viewBox="0 0 24 24"
-									fill="none"
-									stroke="currentColor"
-									stroke-width="2"
-									stroke-linecap="round"
-									stroke-linejoin="round"
-								>
-									<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-									<polyline points="17 8 12 3 7 8" />
-									<line x1="12" y1="3" x2="12" y2="15" />
-								</svg>
-							</div>
-							<p>
-								{fileName()
-									? fileName()
-									: "Drag & drop a file here, or click to select"}
-							</p>
-							<p>Supports images, PDFs, and documents</p>
-						</label>
-					</div>
+			<div class="container">
+				<div class="upload-card">
+					<form onSubmit={handleUpload}>
+						<div
+							class={`upload-dropzone ${
+								dragOver() ? "upload-dropzone--active" : ""
+							} ${fileName() ? "upload-dropzone--has-file" : ""}`}
+							onDragOver={handleDragOver}
+							onDragLeave={handleDragLeave}
+							onDrop={handleDrop}
+						>
+							<input
+								type="file"
+								name="file"
+								id="file-input"
+								class="upload-dropzone__input"
+								required
+								onChange={handleFileChange}
+							/>
+							<label
+								for="file-input"
+								class="upload-dropzone__label"
+							>
+								<div class="upload-dropzone__icon">
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="48"
+										height="48"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+										<polyline points="17 8 12 3 7 8" />
+										<line x1="12" y1="3" x2="12" y2="15" />
+									</svg>
+								</div>
+								<p class="upload-dropzone__text">
+									{fileName()
+										? fileName()
+										: "Drag & drop a file here, or click to select"}
+								</p>
+								<p class="upload-dropzone__hint">
+									Supports images, PDFs, and documents
+								</p>
+							</label>
+						</div>
 
-					<button type="submit" disabled={uploading()}>
-						{uploading() ? "Uploading..." : "Upload File"}
-					</button>
-				</form>
+						<button
+							class="btn btn--primary btn--full mt-lg"
+							type="submit"
+							disabled={uploading()}
+						>
+							{uploading() ? "Uploading..." : "Upload File"}
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	);

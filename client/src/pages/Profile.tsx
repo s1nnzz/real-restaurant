@@ -34,47 +34,81 @@ export default function Profile() {
 	});
 
 	return (
-		<div>
-			<div>
-				<h1>My Profile</h1>
+		<div class="profile-page">
+			<div class="page-header">
+				<div class="page-header__content">
+					<h1 class="page-header__title">My Profile</h1>
+					<p class="page-header__subtitle">
+						Manage your account details
+					</p>
+				</div>
+			</div>
 
+			<div class="container">
 				<Show when={loading() || dataLoading()}>
-					<p>Loading...</p>
+					<div class="loading">
+						<div class="spinner"></div>
+						<p>Loading profile...</p>
+					</div>
 				</Show>
 
 				<Show when={!loading() && !dataLoading()}>
 					<Show
 						when={user()}
-						fallback={<p>Please log in to view your profile.</p>}
+						fallback={
+							<div class="empty-state">
+								<h3 class="empty-state__title">
+									Please Sign In
+								</h3>
+								<p class="empty-state__text">
+									You need to be logged in to view your
+									profile.
+								</p>
+							</div>
+						}
 					>
-						<div>
-							<div>
-								<label>Email:</label>
-								<span>
+						<div class="profile-card">
+							<div class="profile-field">
+								<span class="profile-field__label">Email</span>
+								<span class="profile-field__value">
 									{userData()?.email || user()?.email}
 								</span>
 							</div>
 
-							<div>
-								<label>User ID:</label>
-								<span>{user()?.id}</span>
+							<div class="profile-field">
+								<span class="profile-field__label">
+									Member ID
+								</span>
+								<span class="profile-field__value">
+									#{user()?.id}
+								</span>
 							</div>
 
-							<div>
-								<label>Account Created:</label>
-								<span>
+							<div class="profile-field">
+								<span class="profile-field__label">
+									Member Since
+								</span>
+								<span class="profile-field__value">
 									{userData()?.created_at
 										? new Date(
 												userData().created_at
-										  ).toLocaleDateString()
+										  ).toLocaleDateString("en-GB", {
+												year: "numeric",
+												month: "long",
+												day: "numeric",
+										  })
 										: "N/A"}
 								</span>
 							</div>
-						</div>
 
-						<div>
-							<A href="/bookings">View My Bookings</A>
-							<A href="/delete">Delete Account</A>
+							<div class="profile-actions">
+								<A href="/bookings" class="btn btn--primary">
+									View Reservations
+								</A>
+								<A href="/delete" class="btn btn--outline">
+									Delete Account
+								</A>
+							</div>
 						</div>
 					</Show>
 				</Show>

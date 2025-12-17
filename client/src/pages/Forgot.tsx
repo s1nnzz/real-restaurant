@@ -39,15 +39,20 @@ export default function ForgotPassword() {
 	};
 
 	return (
-		<div>
-			<div>
-				<h1>Forgot Password</h1>
-				<p>Enter your email to receive a password reset link.</p>
+		<div class="auth-page">
+			<div class="auth-card">
+				<h1 class="auth-card__title">Forgot Password</h1>
+				<p class="auth-card__subtitle">
+					Enter your email to receive a password reset link.
+				</p>
 
 				<Form onSubmit={handleSubmit}>
-					<div>
-						<label for="email">Email</label>
+					<div class="form-group">
+						<label class="form-label" for="email">
+							Email
+						</label>
 						<input
+							class="form-input"
 							type="email"
 							id="email"
 							value={email()}
@@ -57,25 +62,34 @@ export default function ForgotPassword() {
 						/>
 					</div>
 
-					<button type="submit" disabled={loading()}>
+					<button
+						class="btn btn--primary btn--full"
+						type="submit"
+						disabled={loading()}
+					>
 						{loading() ? "Sending..." : "Send Reset Link"}
 					</button>
 				</Form>
 
 				{resetToken() && (
-					<div>
+					<div class="dev-token">
 						<h3>Development Mode - Reset Token:</h3>
-						<code>{resetToken()}</code>
+						<code class="dev-token__code">{resetToken()}</code>
 						<p>
-							<a href={`/reset-password?token=${resetToken()}`}>
+							<a
+								class="link"
+								href={`/reset-password?token=${resetToken()}`}
+							>
 								Click here to reset password
 							</a>
 						</p>
 					</div>
 				)}
 
-				<p>
-					<a href="/login">Back to login</a>
+				<p class="auth-card__link">
+					<a class="link" href="/login">
+						Back to login
+					</a>
 				</p>
 			</div>
 		</div>

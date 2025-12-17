@@ -37,26 +37,33 @@ export default function Register() {
 	};
 
 	return (
-		<div>
-			<div>
-				<h1>Register</h1>
+		<div class="auth-page">
+			<div class="auth-card">
+				<h1 class="auth-card__title">Create an Account</h1>
 
 				<Form onSubmit={handleSubmit}>
-					<div>
-						<label for="email">Email</label>
+					<div class="form-group">
+						<label class="form-label" for="email">
+							Email
+						</label>
 						<input
+							class="form-input"
 							type="email"
 							id="email"
 							value={email()}
 							onInput={(e) => setEmail(e.currentTarget.value)}
 							required
 							disabled={loading()}
+							placeholder="your@email.com"
 						/>
 					</div>
 
-					<div>
-						<label for="password">Password</label>
+					<div class="form-group">
+						<label class="form-label" for="password">
+							Password
+						</label>
 						<input
+							class="form-input"
 							type="password"
 							id="password"
 							value={password()}
@@ -64,12 +71,16 @@ export default function Register() {
 							required
 							disabled={loading()}
 							minLength={8}
+							placeholder="Min. 8 characters"
 						/>
 					</div>
 
-					<div>
-						<label for="confirm-password">Confirm Password</label>
+					<div class="form-group">
+						<label class="form-label" for="confirm-password">
+							Confirm Password
+						</label>
 						<input
+							class="form-input"
 							type="password"
 							id="confirm-password"
 							value={confirmPassword()}
@@ -79,17 +90,27 @@ export default function Register() {
 							required
 							disabled={loading()}
 							minLength={8}
+							placeholder="••••••••"
 						/>
 					</div>
 
-					<button type="submit" disabled={loading()}>
-						{loading() ? "Registering..." : "Register"}
-					</button>
-				</Form>
+					<div class="form-footer">
+						<button
+							class="btn btn--primary btn--full"
+							type="submit"
+							disabled={loading()}
+						>
+							{loading()
+								? "Creating account..."
+								: "Create Account"}
+						</button>
 
-				<p>
-					Already have an account? <a href="/login">Login</a>
-				</p>
+						<p>
+							Already have an account?{" "}
+							<a href="/login">Sign in</a>
+						</p>
+					</div>
+				</Form>
 			</div>
 		</div>
 	);
