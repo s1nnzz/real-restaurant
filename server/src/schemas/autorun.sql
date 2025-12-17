@@ -65,6 +65,15 @@ CREATE TABLE IF NOT EXISTS order_items (
   FOREIGN KEY (menu_item_id) REFERENCES menu_items(id) ON DELETE CASCADE
 );
 
-INSERT INTO users(email, password_hash, role) SELECT "admin@admin.com", "[admin]", "admin" WHERE NOT EXISTS (
-  SELECT 1 FROM users WHERE email = "admin@admin.com"
+CREATE TABLE IF NOT EXISTS rewards (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  amount DECIMAL(10, 2) NOT NULL,
+  from_order_id INT UNSIGNED NOT NULL,
+  used BOOLEAN NOT NULL DEFAULT FALSE,
+  used_on_order_id INT UNSIGNED DEFAULT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (from_order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  FOREIGN KEY (used_on_order_id) REFERENCES orders(id) ON DELETE SET NULL
 );

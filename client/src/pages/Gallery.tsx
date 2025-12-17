@@ -32,21 +32,21 @@ export default function Gallery() {
 	}
 
 	return (
-		<div class="page-container">
-			<div class="gallery-header">
-				<h1 class="gallery-title">Gallery</h1>
-				<p class="gallery-subtitle">Browse our collection of images</p>
+		<div>
+			<div>
+				<h1>Gallery</h1>
+				<p>Browse our collection of images</p>
 			</div>
 
 			<Show when={loading()}>
-				<div class="gallery-loading">
+				<div>
 					<p>Loading images...</p>
 				</div>
 			</Show>
 
 			<Show when={!loading() && files().length === 0}>
-				<div class="gallery-empty">
-					<div class="empty-icon">
+				<div>
+					<div>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="64"
@@ -75,21 +75,17 @@ export default function Gallery() {
 			</Show>
 
 			<Show when={!loading() && files().length > 0}>
-				<div class="gallery-grid">
+				<div>
 					<For each={files()}>
 						{(file) => (
-							<div
-								class="gallery-item"
-								onClick={() => openLightbox(file)}
-							>
+							<div onClick={() => openLightbox(file)}>
 								<img
 									src={`/api/uploads/${file}`}
 									alt={file}
-									class="gallery-image"
 									loading="lazy"
 								/>
-								<div class="gallery-overlay">
-									<span class="gallery-filename">{file}</span>
+								<div>
+									<span>{file}</span>
 								</div>
 							</div>
 						)}
@@ -99,8 +95,8 @@ export default function Gallery() {
 
 			{/* Lightbox */}
 			<Show when={selectedImage()}>
-				<div class="lightbox" onClick={closeLightbox}>
-					<button class="lightbox-close" onClick={closeLightbox}>
+				<div onClick={closeLightbox}>
+					<button onClick={closeLightbox}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="24"
@@ -119,7 +115,6 @@ export default function Gallery() {
 					<img
 						src={`/api/uploads/${selectedImage()}`}
 						alt={selectedImage() || ""}
-						class="lightbox-image"
 						onClick={(e) => e.stopPropagation()}
 					/>
 				</div>

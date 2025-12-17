@@ -20,12 +20,13 @@ import Admin from "./pages/Admin";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
+import Rewards from "./pages/Rewards";
 import CheckoutSuccess from "./pages/CheckoutSuccess";
 import CheckoutCancelled from "./pages/CheckoutCancelled";
 import Upload from "./pages/Upload";
 import Gallery from "./pages/Gallery";
 import NotFound from "./pages/NotFound";
-import "./App.css";
+// import "./App.css";
 
 const App = () => {
 	return (
@@ -36,7 +37,7 @@ const App = () => {
 						<CartProvider>
 							<Nav />
 							<Flash />
-							<div class="main-content">{props.children}</div>
+							<div>{props.children}</div>
 							<Footer />
 						</CartProvider>
 					</AuthProvider>
@@ -59,6 +60,7 @@ const App = () => {
 			<Route path="/menu" component={Menu} />
 			<Route path="/cart" component={Cart} />
 			<Route path="/orders" component={Orders} />
+			<Route path="/rewards" component={Rewards} />
 			<Route path="/checkout/success" component={CheckoutSuccess} />
 			<Route path="/checkout/cancelled" component={CheckoutCancelled} />
 			<Route path="/upload" component={Upload} />

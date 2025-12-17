@@ -157,27 +157,18 @@ export default function Admin() {
 	}
 
 	return (
-		<div class="page">
-			<div class="admin-container">
+		<div>
+			<div>
 				<h1>Admin Dashboard</h1>
 
-				<div class="admin-tabs">
-					<button
-						class={activeTab() === "users" ? "tab-active" : ""}
-						onClick={() => setActiveTab("users")}
-					>
+				<div>
+					<button onClick={() => setActiveTab("users")}>
 						Users ({users().length})
 					</button>
-					<button
-						class={activeTab() === "bookings" ? "tab-active" : ""}
-						onClick={() => setActiveTab("bookings")}
-					>
+					<button onClick={() => setActiveTab("bookings")}>
 						Bookings ({bookings().length})
 					</button>
-					<button
-						class={activeTab() === "images" ? "tab-active" : ""}
-						onClick={() => setActiveTab("images")}
-					>
+					<button onClick={() => setActiveTab("images")}>
 						Images ({images().length})
 					</button>
 					<button onClick={() => navigate("/upload")}>
@@ -186,7 +177,7 @@ export default function Admin() {
 				</div>
 
 				<Show when={activeTab() === "users"}>
-					<div class="admin-section">
+					<div>
 						<h2>User Management</h2>
 						<Show
 							when={loading()}
@@ -195,7 +186,7 @@ export default function Admin() {
 									when={users().length > 0}
 									fallback={<p>No users found.</p>}
 								>
-									<table class="admin-table">
+									<table>
 										<thead>
 											<tr>
 												<th>ID</th>
@@ -211,15 +202,12 @@ export default function Admin() {
 														<td>{user.id}</td>
 														<td>{user.email}</td>
 														<td>
-															<span
-																class={`role-badge role-${user.role}`}
-															>
+															<span>
 																{user.role}
 															</span>
 														</td>
 														<td>
 															<button
-																class="btn-danger"
 																onClick={() =>
 																	deleteUser(
 																		user.id,
@@ -244,7 +232,7 @@ export default function Admin() {
 				</Show>
 
 				<Show when={activeTab() === "bookings"}>
-					<div class="admin-section">
+					<div>
 						<h2>Booking Management</h2>
 						<Show
 							when={loading()}
@@ -253,7 +241,7 @@ export default function Admin() {
 									when={bookings().length > 0}
 									fallback={<p>No bookings found.</p>}
 								>
-									<table class="admin-table">
+									<table>
 										<thead>
 											<tr>
 												<th>Booking ID</th>
@@ -289,7 +277,6 @@ export default function Admin() {
 														</td>
 														<td>
 															<button
-																class="btn-danger"
 																onClick={() =>
 																	deleteBooking(
 																		booking.booking_id
@@ -313,13 +300,13 @@ export default function Admin() {
 				</Show>
 
 				<Show when={activeTab() === "images"}>
-					<div class="admin-section">
+					<div>
 						<h2>Image Management</h2>
 						<Show
 							when={images().length > 0}
 							fallback={<p>No images uploaded yet.</p>}
 						>
-							<table class="admin-table">
+							<table>
 								<thead>
 									<tr>
 										<th>Filename</th>
@@ -331,9 +318,8 @@ export default function Admin() {
 										{(image) => (
 											<tr>
 												<td>{image}</td>
-												<td class="image-actions">
+												<td>
 													<button
-														class="btn-preview"
 														onClick={() =>
 															setPreviewImage(
 																image
@@ -343,7 +329,6 @@ export default function Admin() {
 														Preview
 													</button>
 													<button
-														class="btn-danger"
 														onClick={() =>
 															deleteImage(image)
 														}
@@ -359,20 +344,13 @@ export default function Admin() {
 						</Show>
 
 						<Show when={previewImage()}>
-							<div
-								class="image-preview-modal"
-								onClick={() => setPreviewImage(null)}
-							>
-								<div
-									class="image-preview-content"
-									onClick={(e) => e.stopPropagation()}
-								>
+							<div onClick={() => setPreviewImage(null)}>
+								<div onClick={(e) => e.stopPropagation()}>
 									<img
 										src={`/api/uploads/${previewImage()}`}
 										alt={previewImage()!}
 									/>
 									<button
-										class="preview-close"
 										onClick={() => setPreviewImage(null)}
 									>
 										×

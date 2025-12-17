@@ -68,18 +68,13 @@ export default function Upload() {
 	}
 
 	return (
-		<div class="page-container">
-			<div class="upload-container">
-				<h1 class="upload-title">Upload File</h1>
-				<p class="upload-subtitle">
-					Upload images for the menu or gallery
-				</p>
+		<div>
+			<div>
+				<h1>Upload File</h1>
+				<p>Upload images for the menu or gallery</p>
 
-				<form onSubmit={handleUpload} class="upload-form">
+				<form onSubmit={handleUpload}>
 					<div
-						class={`upload-dropzone ${
-							dragOver() ? "dragover" : ""
-						} ${fileName() ? "has-file" : ""}`}
 						onDragOver={handleDragOver}
 						onDragLeave={handleDragLeave}
 						onDrop={handleDrop}
@@ -90,10 +85,9 @@ export default function Upload() {
 							id="file-input"
 							required
 							onChange={handleFileChange}
-							class="file-input"
 						/>
-						<label for="file-input" class="dropzone-content">
-							<div class="upload-icon">
+						<label for="file-input">
+							<div>
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
 									width="48"
@@ -110,22 +104,16 @@ export default function Upload() {
 									<line x1="12" y1="3" x2="12" y2="15" />
 								</svg>
 							</div>
-							<p class="dropzone-text">
+							<p>
 								{fileName()
 									? fileName()
 									: "Drag & drop a file here, or click to select"}
 							</p>
-							<p class="dropzone-hint">
-								Supports images, PDFs, and documents
-							</p>
+							<p>Supports images, PDFs, and documents</p>
 						</label>
 					</div>
 
-					<button
-						type="submit"
-						class="btn btn-primary upload-btn"
-						disabled={uploading()}
-					>
+					<button type="submit" disabled={uploading()}>
 						{uploading() ? "Uploading..." : "Upload File"}
 					</button>
 				</form>

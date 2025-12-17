@@ -4,24 +4,24 @@ import { useAuth } from "../contexts/AuthContext";
 import { useFlash } from "../contexts/FlashContext";
 
 export default function Logout() {
-  const navigate = useNavigate();
-  const { logout } = useAuth();
-  const { setFlash } = useFlash();
+	const navigate = useNavigate();
+	const { logout } = useAuth();
+	const { setFlash } = useFlash();
 
-  createEffect(async () => {
-    try {
-      await logout();
-      setFlash("Logged out successfully", "success");
-      navigate("/");
-    } catch (error) {
-      setFlash("Logout failed", "error");
-      navigate("/");
-    }
-  });
+	createEffect(async () => {
+		try {
+			await logout();
+			setFlash("Logged out successfully", "success");
+			navigate("/");
+		} catch (error) {
+			setFlash("Logout failed", "error");
+			navigate("/");
+		}
+	});
 
-  return (
-    <div class="logout-container">
-      <p>Logging out...</p>
-    </div>
-  );
+	return (
+		<div>
+			<p>Logging out...</p>
+		</div>
+	);
 }

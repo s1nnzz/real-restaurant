@@ -14,9 +14,13 @@ import menuRoute from "./routes/menu.js";
 import cartRoute from "./routes/cart.js";
 import stripeRoute from "./routes/stripe.js";
 import filesRoute from "./routes/files.js";
+import rewardsRoute from "./routes/rewards.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Stripe webhook needs raw body - must be registered BEFORE express.json()
+app.use("/api/webhook/stripe", express.raw({ type: "application/json" }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -43,6 +47,7 @@ app.use("/api", menuRoute);
 app.use("/api", cartRoute);
 app.use("/api", stripeRoute);
 app.use("/api", filesRoute);
+app.use("/api", rewardsRoute);
 
 async function startServer() {
 	try {
